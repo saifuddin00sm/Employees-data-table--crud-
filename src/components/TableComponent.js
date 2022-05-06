@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, createRef } from "react";
 import { Button } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
 import * as XLSX from 'xlsx';
@@ -13,6 +13,7 @@ const TableComponent = () => {
       id: "",
     });
     const [mode, setMode] = useState("Create");
+    const fileInput = createRef();
 
       // deleting a single employe
   const handleDelete = (id) => {
@@ -88,12 +89,41 @@ const handleSubmit = (e) => {
     }
    }
 
+   const handleFile = (file)=> {
+    const reader = new FileReader();
+    const rABS = !!reader.readAsBinaryString;
+    reader.onload = ({ target: { result } }) => {
+      const wb = XLSX.read(result, { type: rABS ? "binary" : "array" });
+      const wsname = wb.SheetNames[0];
+      const ws = wb.Sheets[wsname];
+      const data = XLSX.utils.sheet_to_json(ws);
+      setEmployeList(data);
+    };
+    if (rABS) reader.readAsBinaryString(file);
+    else reader.readAsArrayBuffer(file);
+   }
+
+// import csv
+   const importCsv = (e)=> {
+    const files = e.target.files;
+    if(employelist.length===0){
+        if (files && files[0]) handleFile(files[0]);
+    }else{
+        alert('Please clear current data')
+    }
+   }
+
+
   return (
 <div>
     <div>
       <div className="d-flex justify-content-between">
         <Button onClick={downloadExcel}>Export</Button>
         <h4>Employee list</h4>
+        <form>
+            <input ref={fileInput} onChange={importCsv} type="file" accept={SheetJSFT} hidden />
+            <Button onClick={() => fileInput.current.click()} className="btn btn-warning">Import</Button>
+        </form>
       </div>
       <div>
         <form
@@ -192,4 +222,13 @@ const handleSubmit = (e) => {
   )
 }
 
+
+const SheetJSFT = [
+    "xlsx",
+    "csv"
+  ]
+    .map(function(x) {
+      return "." + x;
+    })
+    .join(",");
 export default TableComponent;
