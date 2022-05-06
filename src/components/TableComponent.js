@@ -89,7 +89,7 @@ const handleSubmit = (e) => {
    }
 
   return (
-    <div>
+<div>
     <div>
       <div className="d-flex justify-content-between">
         <Button onClick={downloadExcel}>Export</Button>
@@ -159,14 +159,14 @@ const handleSubmit = (e) => {
       <tbody>
         {employelist.length === 0 ? (
           <tr>
-            <td>no data found</td>
+            <td>No table data, Create some!</td>
           </tr>
         ) : (
           employelist.map(({ firstName, lastName, salary, date, id }) => (
             <tr key={id}>
               <td>{id}</td>
-              <td>{firstName}</td>
-              <td>{lastName}</td>
+              <td style={{textTransform: 'capitalize'}}>{firstName}</td>
+              <td style={{textTransform: 'capitalize'}}>{lastName}</td>
               <td>${salary}</td>
               <td>{date}</td>
               <td>
