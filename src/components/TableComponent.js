@@ -73,11 +73,26 @@ const handleSubmit = (e) => {
     }
   };
 
+  // download excel sheet
+  const downloadExcel = ()=> {
+    if(employelist.length>0){
+     const workSheet = XLSX.utils.json_to_sheet(employelist);
+     const workBook = XLSX.utils.book_new();
+     XLSX.utils.book_append_sheet(workBook, workSheet, 'employees');
+     // Buffer
+     XLSX.write(workBook,{bookType:'xlsx', type: 'buffer'});
+     // binary string
+     XLSX.write(workBook,{ bookType: 'xlsx', type: 'binary'});
+     // download
+     XLSX.writeFile(workBook,'employees.xlsx');
+    }
+   }
+
   return (
     <div>
     <div>
       <div className="d-flex justify-content-between">
-        <Button>Export</Button>
+        <Button onClick={downloadExcel}>Export</Button>
         <h4>Employee list</h4>
       </div>
       <div>
