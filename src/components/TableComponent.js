@@ -13,7 +13,19 @@ const TableComponent = () => {
       id: "",
     });
     const [mode, setMode] = useState("Create");
-
+    
+  // editing the single employe
+    const handleEdit = (id) => {
+        const obj = employelist.filter((i) => i.id === id && i)[0];
+        setInputValue({
+          fname: obj.firstName,
+          lname: obj.lastName,
+          sal: obj.salary,
+          date: obj.date,
+          id: id,
+        });
+        setMode("Update");
+      };
 // creates and update employees informations
 const handleSubmit = (e) => {
     e.preventDefault();
@@ -23,6 +35,23 @@ const handleSubmit = (e) => {
 
     if (mode === "Update") {
       // updating a single employe detials
+      const fill = employelist.filter((f) => f.id === id)[0];
+      fill.firstName = fname;
+      fill.lastName = lname;
+      fill.salary = sal;
+      fill.date = date;
+      const updated = employelist.map((i) => {
+        let val;
+        if (i.id === id) {
+          val = { ...i, fill };
+        } else {
+          val = i;
+        }
+        return val;
+      });
+      setEmployeList(updated);
+      setInputValue({ fname: "", lname: "", sal: "", date: "", id: "" });
+      setMode("Create");
     } else {
       // Creating a new employe
       const newEmploye = {
@@ -125,6 +154,7 @@ const handleSubmit = (e) => {
                   Delete
                 </Button>
                 <Button
+                    onClick={() => handleEdit(id)}
                   className="btn-secondary btn-sm ms-2"
                 >
                   Edit
