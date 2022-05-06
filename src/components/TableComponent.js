@@ -13,7 +13,14 @@ const TableComponent = () => {
       id: "",
     });
     const [mode, setMode] = useState("Create");
-    
+
+      // deleting a single employe
+  const handleDelete = (id) => {
+    const fill = employelist.filter((f) => f.id !== id);
+    setEmployeList(fill);
+    setInputValue({ fname: "", lname: "", sal: "", date: "", id: "" });
+  };
+
   // editing the single employe
     const handleEdit = (id) => {
         const obj = employelist.filter((i) => i.id === id && i)[0];
@@ -149,6 +156,7 @@ const handleSubmit = (e) => {
               <td>{date}</td>
               <td>
                 <Button
+                  onClick={() => handleDelete(id)}
                   className="btn-sm btn-danger"
                 >
                   Delete
