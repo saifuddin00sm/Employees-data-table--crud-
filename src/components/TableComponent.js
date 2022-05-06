@@ -14,6 +14,29 @@ const TableComponent = () => {
     });
     const [mode, setMode] = useState("Create");
 
+// creates and update employees informations
+const handleSubmit = (e) => {
+    e.preventDefault();
+    const { id, fname, lname, sal, date } = inputValue;
+
+    if (fname === "" || lname === "" || sal === "" || date === "") return;
+
+    if (mode === "Update") {
+      // updating a single employe detials
+    } else {
+      // Creating a new employe
+      const newEmploye = {
+        firstName: fname,
+        lastName: lname,
+        salary: sal,
+        date: date,
+        id: employelist.length+1
+      }
+      setEmployeList([...employelist, newEmploye]);
+      setInputValue({ fname: "", lname: "", sal: "", date: "", id: "" });
+    }
+  };
+
   return (
     <div>
     <div>
@@ -23,6 +46,7 @@ const TableComponent = () => {
       </div>
       <div>
         <form
+        onSubmit={handleSubmit}
           style={{
             display: "grid",
             gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
